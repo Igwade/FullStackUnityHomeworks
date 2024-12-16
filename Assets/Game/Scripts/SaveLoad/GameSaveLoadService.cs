@@ -19,11 +19,11 @@ namespace Game.Scripts.SaveLoad
 
         public GameSaveLoadService(GameFacade gameFacade)
         {
-            this._gameFacade = gameFacade;
+            _gameFacade = gameFacade;
             
-            this._worldAdapter = new GameWorldAdapter(gameFacade);
-            this._repository = new FileRepository("Assets/Saves", "save_");
-            this._serializer = new NewtonsoftJsonSerializer(gameFacade);
+            _worldAdapter = new GameWorldAdapter(gameFacade);
+            _repository = new FileRepository("Assets/StreamingAssets/Saves", "save_");
+            _serializer = new NewtonsoftJsonSerializer(gameFacade);
 
             _saveLoadService = new SaveLoadService(_repository, _serializer);
             RegisterDataProvider();
