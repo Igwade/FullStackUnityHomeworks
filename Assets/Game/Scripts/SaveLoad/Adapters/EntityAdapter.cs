@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace Game.Scripts.SaveLoad
 {
-    public sealed class GameEntityAdapter : IEntityAdapter
+    public sealed class EntityAdapter : IEntity
     {
         private readonly Entity _entity;
-        public GameEntityAdapter(Entity entity) { _entity = entity; }
+        public EntityAdapter(Entity entity) { _entity = entity; }
 
         public int GetId() => _entity.Id;
 
@@ -38,10 +38,10 @@ namespace Game.Scripts.SaveLoad
             _entity.transform.rotation = Quaternion.Euler(x,y,z);
         }
 
-        public IComponentAdapter[] GetComponents()
+        public IComponent[] GetComponents()
         {
             var comps = _entity.GetComponents<MonoBehaviour>();
-            return comps.Select(c => new GameComponentAdapter(c)).ToArray<IComponentAdapter>();
+            return comps.Select(c => new ComponentAdapter(c)).ToArray<IComponent>();
         }
     }
 }

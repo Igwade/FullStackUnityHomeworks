@@ -3,8 +3,8 @@ using SaveLoad;
 
 namespace SaveLoadEntitiesExtension
 {
-    public delegate string GetSaveDataDelegate(IComponentAdapter comp, ISerializer serializer, ISaveLoadContext context);
-    public delegate void LoadFromDataDelegate(IComponentAdapter comp, string json, ISerializer serializer, ISaveLoadContext context);
+    public delegate string GetSaveDataDelegate(IComponent comp, ISerializer serializer, ISaveLoadContext context);
+    public delegate void LoadFromDataDelegate(IComponent comp, string json, ISerializer serializer, ISaveLoadContext context);
 
     public static class SaveableComponentRegistry
     {

@@ -13,7 +13,7 @@ namespace Game.Scripts.SaveLoad
     {
         private readonly GameFacade _gameFacade;
         private readonly ISaveLoadService _saveLoadService;
-        private readonly IWorldAdapter _worldAdapter;
+        private readonly IWorld _world;
         private readonly IRepository _repository;
         private readonly ISerializer _serializer;
 
@@ -21,7 +21,7 @@ namespace Game.Scripts.SaveLoad
         {
             _gameFacade = gameFacade;
             
-            _worldAdapter = new GameWorldAdapter(gameFacade);
+            _world = new WorldAdapter(gameFacade);
             _repository = new FileRepository("Assets/StreamingAssets/Saves", "save_");
             _serializer = new NewtonsoftJsonSerializer(gameFacade);
 
@@ -31,7 +31,7 @@ namespace Game.Scripts.SaveLoad
 
         private void RegisterDataProvider()
         {
-            _saveLoadService.AddProvider(new EntitiesDataProvider("Entities", _worldAdapter));
+            _saveLoadService.AddProvider(new EntitiesDataProvider("Entities", _world));
             _saveLoadService.AddProvider(new WalletDataProvider());
         }
 

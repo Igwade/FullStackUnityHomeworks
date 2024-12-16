@@ -2,13 +2,13 @@
 
 namespace SaveLoadEntitiesExtension
 {
-    public interface IComponentAdapter
+    public interface IComponent
     {
         string GetComponentIdentifier();
         object GetRawComponent();
     }
 
-    public interface IComponentAdapter<out T> : IComponentAdapter
+    public interface IComponent<out T> : IComponent
     {
         new T GetRawComponent();
     }

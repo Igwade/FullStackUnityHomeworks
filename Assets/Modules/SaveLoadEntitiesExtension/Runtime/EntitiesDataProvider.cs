@@ -10,12 +10,12 @@ namespace SaveLoadEntitiesExtension
         public string Key => saveKey;
 
         private readonly string saveKey;
-        private readonly IWorldAdapter world;
+        private readonly IWorld _iWorld;
 
-        public EntitiesDataProvider(string saveKey, IWorldAdapter world)
+        public EntitiesDataProvider(string saveKey, IWorld iWorld)
         {
             this.saveKey = saveKey;
-            this.world = world ?? throw new ArgumentNullException(nameof(world));
+            this._iWorld = iWorld ?? throw new ArgumentNullException(nameof(iWorld));
         }
 
         public string GetData(ISaveLoadContext context, ISerializer serializer)
@@ -32,7 +32,7 @@ namespace SaveLoadEntitiesExtension
 
         private WorldData BuildWorldData(ISaveLoadContext context, ISerializer serializer)
         {
-            var entities = world.GetAllEntities();
+            var entities = _iWorld.GetAllEntities();
             var entitiesData = new List<EntityData>();
 
             foreach (var e in entities)
@@ -68,12 +68,12 @@ namespace SaveLoadEntitiesExtension
 
         private void ApplyWorldData(ISaveLoadContext context, WorldData worldData, ISerializer serializer)
         {
-            world.DestroyAllEntities();
+            _iWorld.DestroyAllEntities();
 
-            var idToEntity = new Dictionary<int, IEntityAdapter>();
+            var idToEntity = new Dictionary<int, IEntity>();
             foreach (var eData in worldData.entities)
             {
-                var entity = world.SpawnEntity(
+                var entity = _iWorld.SpawnEntity(
                     eData.entityName,
                     eData.px, eData.py, eData.pz,
                     eData.rx, eData.ry, eData.rz,

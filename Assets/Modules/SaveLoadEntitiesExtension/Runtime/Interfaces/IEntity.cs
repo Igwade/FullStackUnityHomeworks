@@ -1,6 +1,6 @@
 ﻿namespace SaveLoadEntitiesExtension
 {
-    public interface IEntityAdapter
+    public interface IEntity
     {
         int GetId();
         string GetName();
@@ -9,6 +9,6 @@
         (float x, float y, float z) GetRotation();
         void SetPosition(float x, float y, float z);
         void SetRotation(float x, float y, float z);
-        IComponentAdapter[] GetComponents();
+        IComponent[] GetComponents();
     }
 }

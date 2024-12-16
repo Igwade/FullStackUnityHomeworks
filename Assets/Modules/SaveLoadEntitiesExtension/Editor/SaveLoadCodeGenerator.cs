@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using SaveLoad;
 using SaveLoadEntitiesExtension;
 using SaveLoadEntitiesExtension.Attributes;
 using UnityEditor;
@@ -55,13 +56,8 @@ namespace SaveLoadEntitiesExtension
                     File.Delete(file);
                 }
             }
-            
-            Directory.CreateDirectory(config.GeneratedCodeOutputPath);
 
-            foreach (var file in Directory.GetFiles(config.GeneratedCodeOutputPath, "*" + config.FileSuffix + ".cs"))
-            {
-                File.Delete(file);
-            }
+            Directory.CreateDirectory(config.GeneratedCodeOutputPath);
 
             var assemblies = AppDomain.CurrentDomain.GetAssemblies()
                 .Where(a => config.AssembliesToScan.Contains(a.GetName().Name))
@@ -101,7 +97,7 @@ namespace SaveLoadEntitiesExtension
 
             AssetDatabase.Refresh();
         }
-        
+
         private static void ValidateSaveableMembers(Type type)
         {
             var fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
@@ -109,16 +105,16 @@ namespace SaveLoadEntitiesExtension
 
             foreach (var field in fields)
             {
-                var publicBackingField = field.Name.Contains("__BackingField") 
+                var publicBackingField = field.Name.Contains("__BackingField")
                                          && (type.GetMethod($"get_{GetFieldName(field)}")?.IsPublic ?? false)
                                          && (type.GetMethod($"set_{GetFieldName(field)}")?.IsPublic ?? false);
-                
+
                 if (!field.IsPublic && !publicBackingField)
                 {
                     throw new ArgumentException($"Field '{GetFieldName(field)}' in '{type.FullName}' marked with [Saveable] must be public for get and set.");
                 }
             }
-            
+
             var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .Where(p => p.GetCustomAttribute<SaveableAttribute>() != null);
 
@@ -126,7 +122,6 @@ namespace SaveLoadEntitiesExtension
             {
                 if (!(property.CanRead && property.GetMethod.IsPublic && property.CanWrite && property.SetMethod.IsPublic))
                 {
-                    
                     throw new ArgumentException($"Property '{GetPropertyName(property)}' in '{type.FullName}' marked with [Saveable] must have both a public getter and setter.");
                 }
             }
@@ -137,19 +132,19 @@ namespace SaveLoadEntitiesExtension
             var saveableAttribute = prop.GetCustomAttribute<SaveableAttribute>();
             var overrideName = saveableAttribute.OverrideName;
             var propName = overrideName ?? prop.Name;
-            
+
             if (string.IsNullOrEmpty(propName))
                 throw new ArgumentException("Property name cannot be null or empty.", nameof(propName));
 
             return propName;
         }
-        
+
         private static string GetFieldName(FieldInfo field)
         {
             var saveableAttribute = field.GetCustomAttribute<SaveableAttribute>();
             var overrideName = saveableAttribute.OverrideName;
             var fieldName = overrideName ?? field.Name;
-            
+
             if (string.IsNullOrEmpty(fieldName))
                 throw new ArgumentException("Field name cannot be null or empty.", nameof(fieldName));
 
@@ -161,7 +156,7 @@ namespace SaveLoadEntitiesExtension
 
             return fieldName;
         }
-        
+
         private static string GenerateTypeCode(
             string ns,
             Type targetType,
@@ -173,7 +168,7 @@ namespace SaveLoadEntitiesExtension
             string typeName = targetType.Name;
 
             var sb = new System.Text.StringBuilder();
-            sb.AppendLine($"using {nameof(SaveLoadEntitiesExtension)};");
+            sb.AppendLine("using SaveLoadEntitiesExtension;");
             sb.AppendLine("using UnityEngine;");
             sb.AppendLine("using System.Collections.Generic;");
 
@@ -182,83 +177,102 @@ namespace SaveLoadEntitiesExtension
                 sb.AppendLine($"using {ns1};");
             }
 
-            if (!string.IsNullOrEmpty(ns))
-                sb.AppendLine($"namespace {ns} {{");
+            sb.AppendLine();
 
-            sb.AppendLine($"public static class {typeName}_Serialization {{");
+            if (!string.IsNullOrEmpty(ns))
+            {
+                sb.AppendLine($"namespace {ns}");
+                sb.AppendLine("{");
+            }
+
+            sb.AppendLine($"    public static class {typeName}_Serialization");
+            sb.AppendLine("    {");
 
             if (customSerializer == null)
             {
-                sb.AppendLine("    private class " + typeName + "Data {");
+                sb.AppendLine($"        private class {typeName}Data");
+                sb.AppendLine("        {");
                 foreach (var field in saveableFields)
                 {
-                    sb.AppendLine($"        public string {GetFieldName(field)};");
+                    sb.AppendLine($"            public string {GetFieldName(field)};");
                 }
                 foreach (var prop in saveableProperties)
                 {
-                    sb.AppendLine($"        public string {GetPropertyName(prop)};");
+                    sb.AppendLine($"            public string {GetPropertyName(prop)};");
                 }
-                sb.AppendLine("    }"); 
+                sb.AppendLine("        }");
+                sb.AppendLine();
             }
 
             // Generate Save method
-            sb.AppendLine($"    public static string Save_{typeName}(IComponentAdapter c, ISerializer serializer, ISaveLoadContext context) {{");
+            sb.AppendLine($"        public static string Save_{typeName}(IComponent c, ISerializer serializer, ISaveLoadContext context)");
+            sb.AppendLine("        {");
 
             if (customSerializer != null)
             {
-                sb.AppendLine($"        return {GetFriendlyTypeName(customSerializer.SerializerType)}.Serialize(c, serializer, context);");
+                sb.AppendLine($"            return {GetFriendlyTypeName(customSerializer.SerializerType)}.Serialize(c, serializer, context);");
             }
             else
             {
-                sb.AppendLine($"        var comp = c.GetRawComponent() as {targetType.FullName};");
-                sb.AppendLine($"        var data = new {typeName}Data();");
+                sb.AppendLine($"            var comp = c.GetRawComponent() as {targetType.FullName};");
+                sb.AppendLine($"            var data = new {typeName}Data();");
+                sb.AppendLine();
 
                 foreach (var field in saveableFields)
                 {
-                    sb.AppendLine($"        data.{GetFieldName(field)} = serializer.Serialize(comp.{GetFieldName(field)});");
+                    sb.AppendLine($"            data.{GetFieldName(field)} = serializer.Serialize(comp.{GetFieldName(field)});");
                 }
                 foreach (var prop in saveableProperties)
                 {
-                    sb.AppendLine($"        data.{GetPropertyName(prop)} = serializer.Serialize(comp.{GetPropertyName(prop)});");
+                    sb.AppendLine($"            data.{GetPropertyName(prop)} = serializer.Serialize(comp.{GetPropertyName(prop)});");
                 }
 
-                sb.AppendLine("        return serializer.Serialize(data);");
+                sb.AppendLine();
+                sb.AppendLine("            return serializer.Serialize(data);");
             }
 
-            sb.AppendLine("    }");
+            sb.AppendLine("        }");
+            sb.AppendLine();
             
-            sb.AppendLine($"    public static void Load_{typeName}(IComponentAdapter c, string json, ISerializer serializer, ISaveLoadContext context) {{");
+            sb.AppendLine($"        public static void Load_{typeName}(IComponent c, string json, ISerializer serializer, ISaveLoadContext context)");
+            sb.AppendLine("        {");
 
             if (customSerializer != null)
             {
-                sb.AppendLine($"        {GetFriendlyTypeName(customSerializer.SerializerType)}.Deserialize(c, json, serializer, context);");
+                sb.AppendLine($"            {GetFriendlyTypeName(customSerializer.SerializerType)}.Deserialize(c, json, serializer, context);");
             }
             else
             {
-                sb.AppendLine($"        var comp = c.GetRawComponent() as {targetType.FullName};");
-                sb.AppendLine($"        var data = serializer.Deserialize<{typeName}Data>(json);");
+                sb.AppendLine($"            var comp = c.GetRawComponent() as {targetType.FullName};");
+                sb.AppendLine($"            var data = serializer.Deserialize<{typeName}Data>(json);");
+                sb.AppendLine();
 
                 foreach (var field in saveableFields)
                 {
-                    sb.AppendLine($"        comp.{GetFieldName(field)} = serializer.Deserialize<{GetFriendlyTypeName(field.FieldType)}>(data.{GetFieldName(field)});");
+                    sb.AppendLine($"            comp.{GetFieldName(field)} = serializer.Deserialize<{GetFriendlyTypeName(field.FieldType)}>(data.{GetFieldName(field)});");
                 }
                 foreach (var prop in saveableProperties)
                 {
-                    sb.AppendLine($"        comp.{GetPropertyName(prop)} = serializer.Deserialize<{GetFriendlyTypeName(prop.PropertyType)}>(data.{GetPropertyName(prop)});");
+                    sb.AppendLine($"            comp.{GetPropertyName(prop)} = serializer.Deserialize<{GetFriendlyTypeName(prop.PropertyType)}>(data.{GetPropertyName(prop)});");
                 }
             }
 
-            sb.AppendLine("    }");
+            sb.AppendLine("        }");
+            sb.AppendLine(); // Blank line after Load method
 
-            sb.AppendLine("    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]");
-            sb.AppendLine("    public static void Register() {");
-            sb.AppendLine($"        SaveableComponentRegistry.Register(\"{typeName}\", Save_{typeName}, Load_{typeName});");
-            sb.AppendLine("    }");
+            // Generate Register method
+            sb.AppendLine("        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]");
+            sb.AppendLine("        public static void Register()");
+            sb.AppendLine("        {");
+            sb.AppendLine($"            SaveableComponentRegistry.Register(\"{typeName}\", Save_{typeName}, Load_{typeName});");
+            sb.AppendLine("        }");
 
-            sb.AppendLine("}");
+            sb.AppendLine("    }");
 
             if (!string.IsNullOrEmpty(ns))
+            {
                 sb.AppendLine("}");
+            }
 
             return sb.ToString();
         }
