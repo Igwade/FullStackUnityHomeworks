@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Sirenix.OdinInspector;
+using UnityEngine;
 
 namespace SaveLoadEntitiesExtension
 {
@@ -17,11 +18,18 @@ namespace SaveLoadEntitiesExtension
         [Tooltip("Assemblies to scan for TypeSerializationConfig attributes.")]
         public string[] AssembliesToScan = { "Assembly-CSharp" };
 
-        [Tooltip("If true, the code generator will run automatically on compilation.")]
-        public bool RunOnCompile = true;
-        
         [Tooltip("Additional namespaces to include in generated code.")]
         public string[] AdditionalNamespaces = { };
+
+        [Tooltip("If true, the code generator will run automatically on compilation.")]
+        public bool RunOnCompile = true;
+
+        [Button]
+        public void GenerateEntitiesSerializationCode()
+        {
+            SaveLoadCodeGenerator.GenerateCode(this);
+            Debug.Log("Successfully generated serialization code for entities.");
+        }
     }
 
 }

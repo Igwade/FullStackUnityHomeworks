@@ -13,7 +13,7 @@ namespace SaveLoadEntitiesExtension
 {
     public static class SaveLoadCodeGenerator
     {
-        [MenuItem("SaveLoad/Generate Serialization Code")]
+        [MenuItem("SaveLoad/Generate Entities Serialization Code")]
         public static void GenerateCodeManual()
         {
             var config = LoadConfig();
@@ -47,7 +47,7 @@ namespace SaveLoadEntitiesExtension
             return AssetDatabase.LoadAssetAtPath<SaveLoadGenerationConfig>(AssetDatabase.GUIDToAssetPath(guids[0]));
         }
 
-        private static void GenerateCode(SaveLoadGenerationConfig config)
+        public static void GenerateCode(SaveLoadGenerationConfig config)
         {
             if (Directory.Exists(config.GeneratedCodeOutputPath))
             {
