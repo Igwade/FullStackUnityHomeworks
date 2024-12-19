@@ -4,7 +4,7 @@ using SaveLoad;
 
 namespace Game.Scripts.SaveLoad.DataProviders
 {
-    public abstract class GameDataProvider<T, TV>: IDataProvider<TV>
+    public abstract class DataProviderBase<T, TV>: IDataProvider<TV>
     {
         public string Key => typeof(T).Name;
 

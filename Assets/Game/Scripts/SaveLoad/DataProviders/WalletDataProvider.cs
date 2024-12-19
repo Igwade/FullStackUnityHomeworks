@@ -3,7 +3,7 @@ using SaveLoad;
 
 namespace Game.Gameplay
 {
-    public class WalletDataProvider : GameDataProvider<Wallet, int>
+    public class WalletDataProvider : DataProviderBase<Wallet, int>
     {
         public override int GetData(ISaveLoadContext context)
         {

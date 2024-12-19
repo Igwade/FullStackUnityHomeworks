@@ -17,6 +17,6 @@ MonoBehaviour:
   GeneratedNamespace: GeneratedSaveLoad
   AssembliesToScan:
   - Assembly-CSharp
-  RunOnCompile: 0
   AdditionalNamespaces:
   - SaveLoad
+  RunOnCompile: 0

@@ -13,8 +13,8 @@ namespace Game.Scripts.SaveLoad
 
         public FileRepository(string path, string fileNamePrefix)
         {
-            this._path = path;
-            this._fileNamePrefix = fileNamePrefix;
+            _path = path;
+            _fileNamePrefix = fileNamePrefix;
         }
 
         public async UniTask<Result<int, string>> Save(int version, string data)
