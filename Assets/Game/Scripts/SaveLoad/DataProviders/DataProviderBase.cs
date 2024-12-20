@@ -3,16 +3,16 @@ using SaveLoad;
 
 namespace Game.Scripts.SaveLoad.DataProviders
 {
-    public abstract class DataProviderBase<T, TV>: IDataProvider<TV>
+    public abstract class DataProviderBase<TModel, TDto>: IDataProvider<TDto>
     {
-        public string Key => typeof(T).Name;
+        public string Key => typeof(TModel).Name;
 
-        public abstract TV GetData(ISaveLoadContext context);
+        public abstract TDto GetData(ISaveLoadContext context);
 
-        public abstract void SetData(TV data, ISaveLoadContext context);
+        public abstract void SetData(TDto data, ISaveLoadContext context);
 
-        protected T GetModel(ISaveLoadContext context) 
-            => Resolve<T>(context);
+        protected TModel GetModel(ISaveLoadContext context) 
+            => Resolve<TModel>(context);
 
         protected TK Resolve<TK>(ISaveLoadContext context) 
             => context.Get<GameFacade>().Resolve<TK>();
