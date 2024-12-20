@@ -1,0 +1,17 @@
+{
+    "name": "UnityHttpClient",
+    "rootNamespace": "",
+    "references": [
+        "GUID:ccc3768c3901425a90e375bea10df342",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

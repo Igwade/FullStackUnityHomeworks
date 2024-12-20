@@ -5,7 +5,7 @@ using SampleGame.App;
 using SaveLoadEntitiesExtension;
 using UnityEngine;
 
-namespace Game.Scripts.SaveLoad
+namespace Game.Scripts.SaveLoad.Adapters
 {
     [UsedImplicitly]
     public sealed class WorldAdapter : IWorld

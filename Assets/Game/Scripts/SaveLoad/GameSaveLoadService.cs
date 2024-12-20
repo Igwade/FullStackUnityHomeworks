@@ -4,6 +4,8 @@ using Modules.Entities;
 using SampleGame.App;
 using SaveLoadEntitiesExtension;
 using Game.Gameplay;
+using Game.Scripts.SaveLoad.Adapters;
+using Game.Scripts.SaveLoad.Repositories;
 using SaveLoad;
 using UnityEngine;
 
@@ -22,7 +24,7 @@ namespace Game.Scripts.SaveLoad
             _gameFacade = gameFacade;
             
             _world = new WorldAdapter(gameFacade);
-            _repository = new FileRepository("Assets/StreamingAssets/Saves", "save_");
+            _repository = gameFacade.Instantiate<WebRepository>(); // new FileRepository("Assets/StreamingAssets/Saves", "save_");
             _serializer = new NewtonsoftJsonSerializer(gameFacade);
 
             _saveLoadService = new SaveLoadService(_repository, _serializer);

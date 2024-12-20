@@ -1,5 +1,4 @@
-﻿using SaveLoadEntitiesExtension;
-using SampleGame.App;
+﻿using SampleGame.App;
 using SaveLoad;
 
 namespace Game.Scripts.SaveLoad.DataProviders

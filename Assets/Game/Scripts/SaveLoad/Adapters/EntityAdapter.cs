@@ -3,7 +3,7 @@ using Modules.Entities;
 using SaveLoadEntitiesExtension;
 using UnityEngine;
 
-namespace Game.Scripts.SaveLoad
+namespace Game.Scripts.SaveLoad.Adapters
 {
     public sealed class EntityAdapter : IEntity
     {

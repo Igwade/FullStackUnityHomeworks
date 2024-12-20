@@ -1,6 +1,6 @@
 ﻿using SaveLoadEntitiesExtension;
 
-namespace Game.Scripts.SaveLoad
+namespace Game.Scripts.SaveLoad.Adapters
 {
     public sealed class ComponentAdapter : IComponent 
     {
