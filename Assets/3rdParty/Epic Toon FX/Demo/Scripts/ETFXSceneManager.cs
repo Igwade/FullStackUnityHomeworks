@@ -3,14 +3,13 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.Serialization;
 
-public class EtfxSceneManager : MonoBehaviour
+public class ETFXSceneManager : MonoBehaviour
 {
-	[FormerlySerializedAs("GUIHide")] public bool guiHide = false;
-	[FormerlySerializedAs("GUIHide2")] public bool guiHide2 = false;
-	[FormerlySerializedAs("GUIHide3")] public bool guiHide3 = false;	
-	[FormerlySerializedAs("GUIHide4")] public bool guiHide4 = false;
+	public bool GUIHide = false;
+	public bool GUIHide2 = false;
+	public bool GUIHide3 = false;	
+	public bool GUIHide4 = false;
 	
     public void LoadScene2DDemo()  {
 		SceneManager.LoadScene ("etfx_2ddemo");
@@ -105,9 +104,9 @@ public class EtfxSceneManager : MonoBehaviour
  
      if(Input.GetKeyDown(KeyCode.L))
 	 {
-         guiHide = !guiHide;
+         GUIHide = !GUIHide;
      
-         if (guiHide)
+         if (GUIHide)
 		 {
              GameObject.Find("CanvasSceneSelect").GetComponent<Canvas> ().enabled = false;
          }
@@ -118,9 +117,9 @@ public class EtfxSceneManager : MonoBehaviour
      }
 	      if(Input.GetKeyDown(KeyCode.J))
 	 {
-         guiHide2 = !guiHide2;
+         GUIHide2 = !GUIHide2;
      
-         if (guiHide2)
+         if (GUIHide2)
 		 {
              GameObject.Find("Canvas").GetComponent<Canvas> ().enabled = false;
          }
@@ -131,9 +130,9 @@ public class EtfxSceneManager : MonoBehaviour
      }
 		if(Input.GetKeyDown(KeyCode.H))
 	 {
-         guiHide3 = !guiHide3;
+         GUIHide3 = !GUIHide3;
      
-         if (guiHide3)
+         if (GUIHide3)
 		 {
              GameObject.Find("ParticleSysDisplayCanvas").GetComponent<Canvas> ().enabled = false;
          }
@@ -144,9 +143,9 @@ public class EtfxSceneManager : MonoBehaviour
      }
 	 	if(Input.GetKeyDown(KeyCode.K))
 	 {
-         guiHide4 = !guiHide4;
+         GUIHide4 = !GUIHide4;
      
-         if (guiHide3)
+         if (GUIHide3)
 		 {
              GameObject.Find("CanvasTips").GetComponent<Canvas> ().enabled = false;
          }

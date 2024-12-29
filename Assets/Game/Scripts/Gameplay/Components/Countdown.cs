@@ -1,14 +1,12 @@
-using SaveLoadEntitiesExtension.Attributes;
 using UnityEngine;
 
 namespace SampleGame.Gameplay
 {
     //Can be extended
-    [SaveComponent]
     public sealed class Countdown : MonoBehaviour
     {
         ///Variable
-        [field: SerializeField, Saveable]
+        [field: SerializeField]
         public float Current { get; set; }
 
         ///Const

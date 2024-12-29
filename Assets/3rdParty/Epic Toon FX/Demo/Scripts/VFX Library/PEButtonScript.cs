@@ -2,7 +2,6 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 
 public enum ButtonTypes {
 	NotDefined,
@@ -10,31 +9,31 @@ public enum ButtonTypes {
 	Next
 }
 
-public class PeButtonScript : MonoBehaviour, IEventSystemHandler, IPointerEnterHandler, IPointerExitHandler {
+public class PEButtonScript : MonoBehaviour, IEventSystemHandler, IPointerEnterHandler, IPointerExitHandler {
 	#pragma warning disable 414
-	private Button _myButton;
+	private Button myButton;
 	#pragma warning disable 414
-	[FormerlySerializedAs("ButtonType")] public ButtonTypes buttonType = ButtonTypes.NotDefined;
+	public ButtonTypes ButtonType = ButtonTypes.NotDefined;
 
 	// Use this for initialization
 	void Start () {
-		_myButton = gameObject.GetComponent<Button> ();
+		myButton = gameObject.GetComponent<Button> ();
 	}
 
 	public void OnPointerEnter(PointerEventData eventData) {
 		// Used for Tooltip
-		UICanvasManager.GlobalAccess.mouseOverButton = true;
-		UICanvasManager.GlobalAccess.UpdateToolTip (buttonType);
+		UICanvasManager.GlobalAccess.MouseOverButton = true;
+		UICanvasManager.GlobalAccess.UpdateToolTip (ButtonType);
 	}
 
 	public void OnPointerExit(PointerEventData eventData) {
 		// Used for Tooltip
-		UICanvasManager.GlobalAccess.mouseOverButton = false;
+		UICanvasManager.GlobalAccess.MouseOverButton = false;
 		UICanvasManager.GlobalAccess.ClearToolTip ();
 	}
 
 	public void OnButtonClicked () {
 		// Button Click Actions
-		UICanvasManager.GlobalAccess.UIButtonClick(buttonType);
+		UICanvasManager.GlobalAccess.UIButtonClick(ButtonType);
 	}
 }

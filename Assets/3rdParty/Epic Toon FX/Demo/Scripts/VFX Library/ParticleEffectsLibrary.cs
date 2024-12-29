@@ -1,117 +1,116 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.Serialization;
 
 public class ParticleEffectsLibrary : MonoBehaviour {
 	public static ParticleEffectsLibrary GlobalAccess;
 	void Awake () {
 		GlobalAccess = this;
 
-		_currentActivePeList = new List<Transform> ();
+		currentActivePEList = new List<Transform> ();
 
-		totalEffects = particleEffectPrefabs.Length;
+		TotalEffects = ParticleEffectPrefabs.Length;
 
-		currentParticleEffectNum = 1;
+		CurrentParticleEffectNum = 1;
 
 		// Warn About Lengths of Arrays not matching
-		if (particleEffectSpawnOffsets.Length != totalEffects) {
+		if (ParticleEffectSpawnOffsets.Length != TotalEffects) {
 			Debug.LogError ("ParticleEffectsLibrary-ParticleEffectSpawnOffset: Not all arrays match length, double check counts.");
 		}
-		if (particleEffectPrefabs.Length != totalEffects) {
+		if (ParticleEffectPrefabs.Length != TotalEffects) {
 			Debug.LogError ("ParticleEffectsLibrary-ParticleEffectPrefabs: Not all arrays match length, double check counts.");
 		}
 
 		// Setup Starting PE Name String
-		_effectNameString = particleEffectPrefabs [currentParticleEffectIndex].name + " (" + currentParticleEffectNum.ToString() + " of " + totalEffects.ToString() + ")";
+		effectNameString = ParticleEffectPrefabs [CurrentParticleEffectIndex].name + " (" + CurrentParticleEffectNum.ToString() + " of " + TotalEffects.ToString() + ")";
 	}
 
 	// Stores total number of effects in arrays - NOTE: All Arrays must match length.
-	[FormerlySerializedAs("TotalEffects")] public int totalEffects = 0;
-	[FormerlySerializedAs("CurrentParticleEffectIndex")] public int currentParticleEffectIndex = 0;
-	[FormerlySerializedAs("CurrentParticleEffectNum")] public int currentParticleEffectNum = 0;
+	public int TotalEffects = 0;
+	public int CurrentParticleEffectIndex = 0;
+	public int CurrentParticleEffectNum = 0;
 //	public string[] ParticleEffectDisplayNames;
-	[FormerlySerializedAs("ParticleEffectSpawnOffsets")] public Vector3[] particleEffectSpawnOffsets;
+	public Vector3[] ParticleEffectSpawnOffsets;
 	// How long until Particle Effect is Destroyed - 0 = never
-	[FormerlySerializedAs("ParticleEffectLifetimes")] public float[] particleEffectLifetimes;
-	[FormerlySerializedAs("ParticleEffectPrefabs")] public GameObject[] particleEffectPrefabs;
+	public float[] ParticleEffectLifetimes;
+	public GameObject[] ParticleEffectPrefabs;
 
 	// Storing for deleting if looping particle effect
 	#pragma warning disable 414
-	private string _effectNameString = "";
+	private string effectNameString = "";
 	#pragma warning disable 414
-	private List<Transform> _currentActivePeList;
+	private List<Transform> currentActivePEList;
 
 	void Start () {
 	}
 
-	public string GetCurrentPeNameString() {
-		return particleEffectPrefabs [currentParticleEffectIndex].name + " (" + currentParticleEffectNum.ToString() + " of " + totalEffects.ToString() + ")";
+	public string GetCurrentPENameString() {
+		return ParticleEffectPrefabs [CurrentParticleEffectIndex].name + " (" + CurrentParticleEffectNum.ToString() + " of " + TotalEffects.ToString() + ")";
 	}
 
 	public void PreviousParticleEffect() {
 		// Destroy Looping Particle Effects
-		if (particleEffectLifetimes [currentParticleEffectIndex] == 0) {
-			if (_currentActivePeList.Count > 0) {
-				for (int i = 0; i < _currentActivePeList.Count; i++) {
-					if (_currentActivePeList [i] != null) {
-						Destroy (_currentActivePeList [i].gameObject);
+		if (ParticleEffectLifetimes [CurrentParticleEffectIndex] == 0) {
+			if (currentActivePEList.Count > 0) {
+				for (int i = 0; i < currentActivePEList.Count; i++) {
+					if (currentActivePEList [i] != null) {
+						Destroy (currentActivePEList [i].gameObject);
 					}
 				}
-				_currentActivePeList.Clear ();
+				currentActivePEList.Clear ();
 			}
 		}
 
 		// Select Previous Particle Effect
-		if (currentParticleEffectIndex > 0) {
-			currentParticleEffectIndex -= 1;
+		if (CurrentParticleEffectIndex > 0) {
+			CurrentParticleEffectIndex -= 1;
 		} else {
-			currentParticleEffectIndex = totalEffects - 1;
+			CurrentParticleEffectIndex = TotalEffects - 1;
 		}
-		currentParticleEffectNum = currentParticleEffectIndex + 1;
+		CurrentParticleEffectNum = CurrentParticleEffectIndex + 1;
 
 		// Update PE Name String
-		_effectNameString = particleEffectPrefabs [currentParticleEffectIndex].name + " (" + currentParticleEffectNum.ToString() + " of " + totalEffects.ToString() + ")";
+		effectNameString = ParticleEffectPrefabs [CurrentParticleEffectIndex].name + " (" + CurrentParticleEffectNum.ToString() + " of " + TotalEffects.ToString() + ")";
 	}
 	public void NextParticleEffect() {
 		// Destroy Looping Particle Effects
-		if (particleEffectLifetimes [currentParticleEffectIndex] == 0) {
-			if (_currentActivePeList.Count > 0) {
-				for (int i = 0; i < _currentActivePeList.Count; i++) {
-					if (_currentActivePeList [i] != null) {
-						Destroy (_currentActivePeList [i].gameObject);
+		if (ParticleEffectLifetimes [CurrentParticleEffectIndex] == 0) {
+			if (currentActivePEList.Count > 0) {
+				for (int i = 0; i < currentActivePEList.Count; i++) {
+					if (currentActivePEList [i] != null) {
+						Destroy (currentActivePEList [i].gameObject);
 					}
 				}
-				_currentActivePeList.Clear ();
+				currentActivePEList.Clear ();
 			}
 		}
 
 		// Select Next Particle Effect
-		if (currentParticleEffectIndex < totalEffects - 1) {
-			currentParticleEffectIndex += 1;
+		if (CurrentParticleEffectIndex < TotalEffects - 1) {
+			CurrentParticleEffectIndex += 1;
 		} else {
-			currentParticleEffectIndex = 0;
+			CurrentParticleEffectIndex = 0;
 		}
-		currentParticleEffectNum = currentParticleEffectIndex + 1;
+		CurrentParticleEffectNum = CurrentParticleEffectIndex + 1;
 
 		// Update PE Name String
-		_effectNameString = particleEffectPrefabs [currentParticleEffectIndex].name + " (" + currentParticleEffectNum.ToString() + " of " + totalEffects.ToString() + ")";
+		effectNameString = ParticleEffectPrefabs [CurrentParticleEffectIndex].name + " (" + CurrentParticleEffectNum.ToString() + " of " + TotalEffects.ToString() + ")";
 	}
 
-	private Vector3 _spawnPosition = Vector3.zero;
+	private Vector3 spawnPosition = Vector3.zero;
 	public void SpawnParticleEffect(Vector3 positionInWorldToSpawn) {
 		// Spawn Currently Selected Particle Effect
-		_spawnPosition = positionInWorldToSpawn + particleEffectSpawnOffsets[currentParticleEffectIndex];
-		GameObject newParticleEffect = GameObject.Instantiate(particleEffectPrefabs[currentParticleEffectIndex], _spawnPosition, particleEffectPrefabs[currentParticleEffectIndex].transform.rotation) as GameObject;
-		newParticleEffect.name = "PE_" + particleEffectPrefabs[currentParticleEffectIndex];
+		spawnPosition = positionInWorldToSpawn + ParticleEffectSpawnOffsets[CurrentParticleEffectIndex];
+		GameObject newParticleEffect = GameObject.Instantiate(ParticleEffectPrefabs[CurrentParticleEffectIndex], spawnPosition, ParticleEffectPrefabs[CurrentParticleEffectIndex].transform.rotation) as GameObject;
+		newParticleEffect.name = "PE_" + ParticleEffectPrefabs[CurrentParticleEffectIndex];
 		// Store Looping Particle Effects Systems
-		if (particleEffectLifetimes [currentParticleEffectIndex] == 0) {
-			_currentActivePeList.Add (newParticleEffect.transform);
+		if (ParticleEffectLifetimes [CurrentParticleEffectIndex] == 0) {
+			currentActivePEList.Add (newParticleEffect.transform);
 		}
-		_currentActivePeList.Add(newParticleEffect.transform);
+		currentActivePEList.Add(newParticleEffect.transform);
 		// Destroy Particle Effect After Lifetime expired
-		if (particleEffectLifetimes [currentParticleEffectIndex] != 0) {
-			Destroy(newParticleEffect, particleEffectLifetimes[currentParticleEffectIndex]);
+		if (ParticleEffectLifetimes [CurrentParticleEffectIndex] != 0) {
+			Destroy(newParticleEffect, ParticleEffectLifetimes[CurrentParticleEffectIndex]);
 		}
 	}
 }

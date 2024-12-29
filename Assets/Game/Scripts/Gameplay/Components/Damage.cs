@@ -1,4 +1,3 @@
-using SaveLoadEntitiesExtension.Attributes;
 using UnityEngine;
 
 namespace SampleGame.Gameplay
@@ -8,6 +7,6 @@ namespace SampleGame.Gameplay
     {
         ///Const
         [field: SerializeField]
-        public int Value { get; set; } = 10;
+        public int Value { get; private set; } = 10;
     }
 }

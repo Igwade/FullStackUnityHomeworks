@@ -1,11 +1,12 @@
+using App.SaveLoad.Entities;
+using App.SaveLoad.Entities.ComponentSerializers;
 using SampleGame.Common;
-using SaveLoadEntitiesExtension.Attributes;
 using UnityEngine;
 
 namespace SampleGame.Gameplay
 {
     //Can be extended
-    public sealed class Team : MonoBehaviour
+    public sealed class Team : MonoBehaviour, ISerializableComponent<TeamSerializer>
     {
         ///Variable
         [field: SerializeField]

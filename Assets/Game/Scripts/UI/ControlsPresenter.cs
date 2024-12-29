@@ -1,33 +1,34 @@
 using System;
-using Cysharp.Threading.Tasks;
-using Game.Scripts.SaveLoad;
+using App.SaveLoad;
+using EitherMonad;
+using Sirenix.Utilities;
 
 namespace Game.Gameplay
 {
     public sealed class ControlsPresenter : IControlsPresenter
     {
-        private readonly GameSaveLoadService _gameSaveLoadService;
+        private readonly GameSaveLoader saveLoader;
 
-        public ControlsPresenter(GameSaveLoadService gameSaveLoadService)
+        public ControlsPresenter(GameSaveLoader saveLoader)
         {
-            this._gameSaveLoadService = gameSaveLoadService;
-        }
-        
-        public void Save(Action<bool, int> callback)
-        {
-            _gameSaveLoadService.SaveGame(callback: callback).Forget();
+            this.saveLoader = saveLoader;
         }
 
-        public void Load(string versionText, Action<bool, int> callback)
+        public void Save(Action<Result<int, string>> callback)
         {
-            int? version = null;
+            saveLoader.Save(callback: callback).Forget();
+        }
 
-            if (int.TryParse(versionText, out var result))
+        public void Load(string versionText, Action<Result<int, string>> callback)
+        {
+            if (versionText.IsNullOrWhitespace())
             {
-                version = result;
+                saveLoader.Load(callback: callback).Forget();
             }
-            
-            _gameSaveLoadService.LoadGame(version, callback).Forget();
+            else if (int.TryParse(versionText, out var version))
+            {
+                saveLoader.Load(version, callback: callback).Forget();
+            }
         }
     }
 }

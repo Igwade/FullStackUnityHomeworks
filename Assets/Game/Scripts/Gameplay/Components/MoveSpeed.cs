@@ -1,4 +1,3 @@
-using SaveLoadEntitiesExtension.Attributes;
 using UnityEngine;
 
 namespace SampleGame.Gameplay

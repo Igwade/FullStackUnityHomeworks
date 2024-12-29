@@ -1,19 +1,19 @@
+using App.SaveLoad.Entities;
+using App.SaveLoad.Entities.ComponentSerializers;
 using SampleGame.Common;
-using SaveLoadEntitiesExtension.Attributes;
 using UnityEngine;
 
 namespace SampleGame.Gameplay
 {
     //Can be extended
-    [SaveComponent]
-    public sealed class ResourceBag : MonoBehaviour
+    public sealed class ResourceBag : MonoBehaviour, ISerializableComponent<ResourceBagSerializer>
     {
         ///Variable
-        [field: SerializeField, Saveable]
+        [field: SerializeField]
         public ResourceType Type { get; set; }
         
         ///Variable
-        [field: SerializeField, Saveable]
+        [field: SerializeField]
         public int Current { get; set; }
         
         ///Const

@@ -1,4 +1,5 @@
 using System.Linq;
+using EitherMonad;
 using Modules.Entities;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -68,18 +69,20 @@ namespace Game.Gameplay
         private void OnSaveClicked() => _presenter.Save(this.OnSaveResult);
         private void OnLoadClicked() => _presenter.Load(_versionText, this.OnLoadResult);
 
-        private void OnSaveResult(bool success, int version)
+        private void OnSaveResult(Result<int, string> result)
         {
-            Debug.Log(success
-                ? $"<color=green><b>Sucessfully saved version: {version}</b></color>"
-                : "<color=red><b>Saving failed!</b></color>");
+            result.Match(
+                success => Debug.Log($"<color=green><b>Sucessfully saved version: {success}</b></color>"),
+                error => Debug.Log($"<color=red><b>Saving failed: {error}</b></color>")
+            );
         }
-
-        private void OnLoadResult(bool success, int version)
+        
+        private void OnLoadResult(Result<int, string> result)
         {
-            Debug.Log(success
-                ? $"<color=green><b>Sucessfully loaded version: {version}</b></color>"
-                : "<color=red><b>Loading failed!</b></color>");
+            result.Match(
+                success => Debug.Log($"<color=green><b>Sucessfully loaded version: {success}</b></color>"),
+                error => Debug.Log($"<color=red><b>Loading failed: {error}</b></color>")
+            );
         }
     }
 }

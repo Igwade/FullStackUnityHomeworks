@@ -4,7 +4,7 @@ using System.Collections;
 namespace EpicToonFX
 {
 
-	public class EtfxPitchRandomizer : MonoBehaviour
+	public class ETFXPitchRandomizer : MonoBehaviour
 	{
 	
 		public float randomPercent = 10;

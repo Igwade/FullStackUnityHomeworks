@@ -30,7 +30,7 @@ namespace EitherMonad
         public TResult Match<TResult>(Func<TSuccess, TResult> onSuccess, Func<TError, TResult> onError) =>
             IsSuccess ? onSuccess(_success) : onError(_error);
         
-        public void MatchAction(Action<TSuccess> onSuccess, Action<TError> onError)
+        public void Match(Action<TSuccess> onSuccess, Action<TError> onError)
         {
             if (IsSuccess)
                 onSuccess(_success);

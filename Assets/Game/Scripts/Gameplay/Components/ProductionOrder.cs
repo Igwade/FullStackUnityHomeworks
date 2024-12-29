@@ -1,24 +1,22 @@
 using System.Collections.Generic;
+using App.SaveLoad.Entities;
+using App.SaveLoad.Entities.ComponentSerializers;
 using Modules.Entities;
-using SaveLoadEntitiesExtension.Attributes;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace SampleGame.Gameplay
 {
     //Can be extended
-    [SaveComponent]
-    public sealed class ProductionOrder : MonoBehaviour
+    public sealed class ProductionOrder : MonoBehaviour, ISerializableComponent<ProductionOrderSerializer>
     {
         ///Variable
-        [FormerlySerializedAs("_queue")] [SerializeField]
-        private List<EntityConfig> queue;
+        [SerializeField]
+        private List<EntityConfig> _queue;
         
-        [Saveable]
         public IReadOnlyList<EntityConfig> Queue
         {
-            get { return queue; }
-            set { queue = new List<EntityConfig>(value); }
+            get { return _queue; }
+            set { _queue = new List<EntityConfig>(value); }
         }
     }
 }
