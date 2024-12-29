@@ -27,7 +27,6 @@ namespace App.Repository
                 .SetUrl(SaveURL(version))
                 .SetRequestData(content)
                 .UsePlainText()
-                .SetRawPayload(content, Content.Json)
                 .Build());
 
         public UniTask<Result<string, string>> Load(int version) =>

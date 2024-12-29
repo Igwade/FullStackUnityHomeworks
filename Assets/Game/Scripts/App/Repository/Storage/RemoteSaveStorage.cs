@@ -15,8 +15,8 @@ namespace App.Repository.Storage
             this.client = client;
         }
 
-        public async UniTask<Result<Unit, string>> SaveStateAsync(int version, string json, CancellationToken token = default) 
-            => await client.Save(version, json);
+        public async UniTask<Result<Unit, string>> SaveStateAsync(int version, string state, CancellationToken token = default) 
+            => await client.Save(version, state);
 
         public async UniTask<Result<string, string>> LoadStateAsync(int version, CancellationToken token = default) 
             => await client.Load(version);

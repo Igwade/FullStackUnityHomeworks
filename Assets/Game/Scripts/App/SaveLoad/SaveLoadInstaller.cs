@@ -30,6 +30,7 @@ namespace App.SaveLoad
             this.Container.BindInterfacesTo<ResourceBagSerializer>().AsSingle();
             this.Container.BindInterfacesTo<TargetObjectSerializer>().AsSingle();
             this.Container.BindInterfacesTo<TeamSerializer>().AsSingle();
+            this.Container.BindInterfacesTo<CountdownSerializer>().AsSingle();
         }
     }
 }
