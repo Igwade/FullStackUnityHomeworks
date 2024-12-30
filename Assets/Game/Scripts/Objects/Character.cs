@@ -32,7 +32,7 @@ namespace Objects
         private void OnDisable() => healthComponent.OnDeath -= Destroy;
         public void Destroy() => gameObject.SetActive(false);
 
-        bool JumpComponent.ICondition.CanJump() => groundedComponent.IsGrounded();
+        bool JumpComponent.ICondition.CanJump() => groundedComponent.IsGrounded() && healthComponent.IsAlive();
         bool MoveComponent.ICondition.CanMove() => healthComponent.IsAlive();
         bool PushComponent.ICondition.CanPush() => healthComponent.IsAlive();
 
