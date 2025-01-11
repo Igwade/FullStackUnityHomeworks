@@ -87,7 +87,7 @@ namespace App.SaveLoad
             var latestVersionResult = await _repository.GetLatestVersion();
             if (latestVersionResult.IsError)
             {
-                callback?.Invoke("Could not determine the latest version to load.");
+                callback?.Invoke($"Could not determine the latest version to load.\n{latestVersionResult.Error}");
                 return;
             }
 

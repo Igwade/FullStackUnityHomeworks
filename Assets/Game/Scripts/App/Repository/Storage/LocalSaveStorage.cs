@@ -9,7 +9,7 @@ using JetBrains.Annotations;
 namespace App.Repository.Storage
 {
     [UsedImplicitly]
-    public sealed class LocalSaveStorage : ISaveStorage
+    public sealed class LocalSaveStorage
     {
         private readonly string folderPath;
         private readonly string fileNamePattern;

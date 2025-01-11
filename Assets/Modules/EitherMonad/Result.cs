@@ -2,7 +2,13 @@
 
 namespace EitherMonad
 {
-    public class Result<TSuccess, TError>
+    public interface IResult
+    {
+        bool IsSuccess { get; }
+        bool IsError { get; }
+    }
+    
+    public class Result<TSuccess, TError>: IResult
     {
         private readonly TSuccess _success;
         private readonly TError _error;

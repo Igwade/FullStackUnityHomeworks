@@ -1,7 +1,7 @@
-using App.Repository.Middleware.Middlewares;
 using App.SaveLoad.Entities;
-using App.SaveLoad.Entities.ComponentSerializers;
+using App.SaveLoad.Entities.TypesSerializers;
 using App.SaveLoad.Serializers;
+using Modules.ComponentSerialization.Runtime;
 using UnityEngine;
 using Zenject;
 
@@ -16,21 +16,32 @@ namespace App.SaveLoad
         public override void InstallBindings()
         {
             this.Container.Bind<GameSaveLoader>().AsSingle();
-            this.Container.BindInterfacesAndSelfTo<EntitySerializationHelper>().AsSingle();
-
             this.InstallComponentSerializers();
         }
         
         public void InstallComponentSerializers()
         {
             this.Container.BindInterfacesTo<WorldSerializer>().AsSingle();
-            this.Container.BindInterfacesTo<HealthSerializer>().AsSingle();
-            this.Container.BindInterfacesTo<DestinationPointSerializer>().AsSingle();
-            this.Container.BindInterfacesTo<ProductionOrderSerializer>().AsSingle();
-            this.Container.BindInterfacesTo<ResourceBagSerializer>().AsSingle();
-            this.Container.BindInterfacesTo<TargetObjectSerializer>().AsSingle();
-            this.Container.BindInterfacesTo<TeamSerializer>().AsSingle();
-            this.Container.BindInterfacesTo<CountdownSerializer>().AsSingle();
+            
+            this.Container
+                .BindInterfacesTo<EntityConfigSerializer>().AsCached()
+                .OnInstantiated<EntityConfigSerializer>(RegisterSerializer)
+                .NonLazy();
+            
+            this.Container
+                .BindInterfacesTo<Vector3Serializer>().AsCached()
+                .OnInstantiated<Vector3Serializer>(RegisterSerializer)
+                .NonLazy();
+            
+            this.Container
+                .BindInterfacesTo<EntitySerializer>().AsCached()
+                .OnInstantiated<EntitySerializer>(RegisterSerializer)
+                .NonLazy();
+        }
+
+        private void RegisterSerializer<TSource, TDto>(InjectContext _, ITypeSerializer<TSource, TDto> serializer)
+        {
+            TypeSerializers.Register(serializer);
         }
     }
 }

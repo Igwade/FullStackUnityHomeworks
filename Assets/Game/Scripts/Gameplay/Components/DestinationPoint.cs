@@ -1,13 +1,14 @@
-using App.SaveLoad.Entities;
-using App.SaveLoad.Entities.ComponentSerializers;
+using Modules.ComponentSerialization.Runtime.Attributes;
 using UnityEngine;
 
 namespace SampleGame.Gameplay
 {
     //Can be extended
-    public sealed class DestinationPoint : MonoBehaviour, ISerializableComponent<DestinationPointSerializer>
+    [SaveComponent]
+    public sealed class DestinationPoint : MonoBehaviour
     {
         ///Variable
+        [Save]
         [field: SerializeField]
         public Vector3 Value { get; set; }
     }

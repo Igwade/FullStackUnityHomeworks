@@ -1,13 +1,14 @@
-using App.SaveLoad.Entities;
-using App.SaveLoad.Entities.ComponentSerializers;
+using Modules.ComponentSerialization.Runtime.Attributes;
 using UnityEngine;
 
 namespace SampleGame.Gameplay
 {
     //Can be extended
-    public sealed class Countdown : MonoBehaviour, ISerializableComponent<CountdownSerializer>
+    [SaveComponent]
+    public sealed class Countdown : MonoBehaviour
     {
         ///Variable
+        [Save]
         [field: SerializeField]
         public float Current { get; set; }
 

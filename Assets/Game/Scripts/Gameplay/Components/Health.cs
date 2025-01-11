@@ -1,13 +1,14 @@
-using App.SaveLoad.Entities;
-using App.SaveLoad.Entities.ComponentSerializers;
+using Modules.ComponentSerialization.Runtime.Attributes;
 using UnityEngine;
 
 namespace Game.Scripts.Gameplay.Components
 {
     //Can be extended
-    public sealed class Health : MonoBehaviour, ISerializableComponent<HealthSerializer>
+    [SaveComponent]
+    public sealed class Health : MonoBehaviour
     {
         ///Variable
+        [Save]
         [field: SerializeField]
         public int Current { get; set; } = 50;
 
