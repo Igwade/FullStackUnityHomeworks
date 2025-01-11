@@ -1,7 +1,6 @@
 using System;
 using Modules.ComponentSerialization.Runtime;
 using Modules.Entities;
-using UnityEngine.Serialization;
 
 namespace App.SaveLoad.Entities.TypesSerializers
 {

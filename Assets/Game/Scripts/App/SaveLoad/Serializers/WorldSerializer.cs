@@ -119,7 +119,7 @@ namespace App.SaveLoad.Serializers
         private void SerializeComponent(MonoBehaviour component, Dictionary<string, string> saveState)
         {
             var type = component.GetType().Name;
-            var serializer = ComponentSerializersRegistry.GetRecord(component);
+            var serializer = ComponentSerializersRegistry.GetFor(component);
             
             if (serializer != null)
             {
@@ -132,7 +132,7 @@ namespace App.SaveLoad.Serializers
         private void DeserializeComponent(MonoBehaviour component, Dictionary<string, string> saveState)
         {
             var type = component.GetType().Name;
-            var serializer = ComponentSerializersRegistry.GetRecord(component);
+            var serializer = ComponentSerializersRegistry.GetFor(component);
             
             if (serializer != null && saveState.TryGetValue(type, out var json))
             {
