@@ -1,5 +1,5 @@
 using App.SaveLoad.Entities;
-using App.SaveLoad.Entities.TypesSerializers;
+using App.SaveLoad.Entities.TypeSerializers;
 using App.SaveLoad.Serializers;
 using Modules.ComponentSerialization.Runtime;
 using UnityEngine;

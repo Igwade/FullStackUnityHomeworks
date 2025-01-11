@@ -2,7 +2,7 @@ using System;
 using Modules.ComponentSerialization.Runtime;
 using Modules.Entities;
 
-namespace App.SaveLoad.Entities.TypesSerializers
+namespace App.SaveLoad.Entities.TypeSerializers
 {
     [Serializable]
     public class EntityConfigDto

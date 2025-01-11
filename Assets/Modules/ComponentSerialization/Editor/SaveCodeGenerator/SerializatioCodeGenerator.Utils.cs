@@ -9,12 +9,13 @@ namespace Modules.ComponentSerialization
 {
     public static partial class SerializationCodeGenerator
     {
-        private static string DefaultDependencies()
+        private static string DefaultUsings()
         {
             var sb = new StringBuilder();
             sb.AppendLine("using UnityEngine;");
             sb.AppendLine("using System;");
             sb.AppendLine("using System.Collections.Generic;");
+            sb.AppendLine("using Modules.ComponentSerialization;");
             sb.AppendLine();
             return sb.ToString();
         }

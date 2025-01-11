@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08ecf2d6a6854e7cbd5c42739397498a, type: 3}
   m_Name: SaveSystemGeneratorConfig
   m_EditorClassIdentifier: 
-  generatedNamespace: Modules.ComponentSerialization
-  outputFolder: Assets/Game/Scripts/App/SaveLoad/Entities/Generated
+  generatedNamespace: App.SaveLoad.Entities.ComponentSerializers
+  outputFolder: Assets/Game/Scripts/App/SaveLoad/Entities/ComponentSerializers/Generated
   generateOneFilePerClass: 1
   autoRefresh: 1
-  clearOldGen: 0

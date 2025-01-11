@@ -2,7 +2,7 @@ using System;
 using Modules.ComponentSerialization.Runtime;
 using UnityEngine;
 
-namespace App.SaveLoad.Entities.TypesSerializers
+namespace App.SaveLoad.Entities.TypeSerializers
 {
     
     [Serializable]

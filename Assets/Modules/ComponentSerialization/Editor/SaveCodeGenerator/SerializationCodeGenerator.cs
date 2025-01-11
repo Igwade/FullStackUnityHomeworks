@@ -42,8 +42,6 @@ namespace Modules.ComponentSerialization
                     logs.Add("[SaveCodeGenerator] No classes with [SaveComponent].");
                 }
 
-                var registryRecords = new List<string>();
-
                 foreach (var compType in saveComponents)
                 {
                     var codeBlock = GenerateDtoAndSerializerForComponent(
@@ -52,19 +50,11 @@ namespace Modules.ComponentSerialization
                         out var serializerName
                     );
 
-                    registryRecords.Add($@"
-            ComponentSerializersRegistry.Register(typeof({compType.FullName}), new ComponentSerializer
-            {{
-                DtoType = typeof({generatedNamespace}.{dtoName}),
-                Serialize = (mono) => {generatedNamespace}.{serializerName}.Serialize(({compType.FullName})mono),
-                Deserialize = (mono, dto) => {generatedNamespace}.{serializerName}.Deserialize(({compType.FullName})mono, ({generatedNamespace}.{dtoName})dto)
-            }});");
-
                     if (oneFilePerClass)
                     {
                         
                         var fileText = WrapInNamespace(generatedNamespace, codeBlock);
-                        var fileTextWithDeps = DefaultDependencies() + fileText;
+                        var fileTextWithDeps = DefaultUsings() + fileText;
                         var filePath = Path.Combine(outputFolder, compType.Name + "Serializer.cs");
                         File.WriteAllText(filePath, fileTextWithDeps);
                         var logMessage = "[SaveCodeGenerator] Generated: " + filePath;
