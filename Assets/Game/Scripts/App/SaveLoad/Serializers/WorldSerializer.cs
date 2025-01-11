@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using Modules.ComponentSerialization;
 using Modules.Entities;
 using SampleGame.Common;
 using UnityEngine;
-using App.SaveLoad.Entities.ComponentSerializers;
 
 namespace App.SaveLoad.Serializers
 {
@@ -120,7 +120,7 @@ namespace App.SaveLoad.Serializers
         {
             var type = component.GetType().Name;
             var serializer = ComponentSerializersRegistry.GetRecord(component);
-
+            
             if (serializer != null)
             {
                 var dto = serializer.Serialize(component);
@@ -133,7 +133,7 @@ namespace App.SaveLoad.Serializers
         {
             var type = component.GetType().Name;
             var serializer = ComponentSerializersRegistry.GetRecord(component);
-
+            
             if (serializer != null && saveState.TryGetValue(type, out var json))
             {
                 var dto = JsonUtility.FromJson(json, serializer.DtoType);

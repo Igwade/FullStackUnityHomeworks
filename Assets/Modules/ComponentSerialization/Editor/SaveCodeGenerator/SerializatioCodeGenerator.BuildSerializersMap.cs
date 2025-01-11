@@ -6,7 +6,7 @@ using UnityEditor;
 
 namespace Modules.ComponentSerialization
 {
-    public static partial class SaveCodeGenerator
+    public static partial class SerializationCodeGenerator
     {
         /// <summary>
         /// Ищем все типы, которые реализуют ITypeSerializer<,>, чтобы уметь сериализовать сложные поля.

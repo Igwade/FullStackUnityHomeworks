@@ -9,7 +9,7 @@ using Modules.ComponentSerialization.Runtime.Attributes;
 
 namespace Modules.ComponentSerialization
 {
-    public static partial class SaveCodeGenerator
+    public static partial class SerializationCodeGenerator
     {
         private static string GenerateDtoAndSerializerForComponent(
             Type compType,
@@ -22,9 +22,6 @@ namespace Modules.ComponentSerialization
 
             var sb = new StringBuilder();
             sb.AppendLine($"    // ----- {compType.Name} -----");
-            sb.AppendLine("    using UnityEngine;");
-            sb.AppendLine("    using System;");
-            sb.AppendLine("    using System.Collections.Generic;");
             sb.AppendLine();
 
             var members = GetSaveMembers(compType);
@@ -62,7 +59,26 @@ namespace Modules.ComponentSerialization
             }
 
             sb.AppendLine("        }");
-            sb.AppendLine("    }");
+            sb.AppendLine();
+           /*
+            ComponentSerializersRegistry.Register(typeof(Game.Scripts.Gameplay.Components.Health), new ComponentSerializer
+            {
+                DtoType = typeof(Modules.ComponentSerialization.HealthDto),
+                Serialize = (mono) => Modules.ComponentSerialization.HealthSerializer.Serialize((Game.Scripts.Gameplay.Components.Health)mono),
+                Deserialize = (mono, dto) => Modules.ComponentSerialization.HealthSerializer.Deserialize((Game.Scripts.Gameplay.Components.Health)mono, (Modules.ComponentSerialization.HealthDto)dto)
+            });
+            */
+            sb.AppendLine($"        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]");
+            sb.AppendLine($"        private static void Register()");
+            sb.AppendLine($"        {{");
+            sb.AppendLine($"            {nameof(ComponentSerializersRegistry)}.Register(typeof({compType.FullName}), new {nameof(ComponentSerializer)}");
+            sb.AppendLine($"            {{");
+            sb.AppendLine($"                DtoType = typeof({dtoName}),");
+            sb.AppendLine($"                Serialize = (mono) => Serialize(({compType.FullName})mono),");
+            sb.AppendLine($"                Deserialize = (mono, dto) => Deserialize(({compType.FullName})mono, ({dtoName})dto)");
+            sb.AppendLine($"            }});");
+            sb.AppendLine($"        }}");
+            sb.AppendLine($"    }}");
 
             return sb.ToString();
         }

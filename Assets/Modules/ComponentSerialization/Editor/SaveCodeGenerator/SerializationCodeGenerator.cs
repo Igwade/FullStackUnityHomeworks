@@ -12,15 +12,13 @@ using Modules.ComponentSerialization.Runtime.Attributes;
 
 namespace Modules.ComponentSerialization
 {
-    public static partial class SaveCodeGenerator
+    public static partial class SerializationCodeGenerator
     {
         private static readonly Dictionary<Type, (Type dtoType, Type serializerType)> SerializersMap = new();
 
-        private const string RegistryFileName = "ComponentSerializersRegistry.cs";
-
         private static string TypeSerializersName => typeof(TypeSerializers).FullName;
 
-        public static void GenerateAllDtoAndSerializers(
+        public static void Generate(
             string outputFolder,
             string generatedNamespace,
             bool oneFilePerClass,
@@ -55,18 +53,20 @@ namespace Modules.ComponentSerialization
                     );
 
                     registryRecords.Add($@"
-            _map[typeof({compType.FullName})] = new ComponentSerializer
+            ComponentSerializersRegistry.Register(typeof({compType.FullName}), new ComponentSerializer
             {{
                 DtoType = typeof({generatedNamespace}.{dtoName}),
                 Serialize = (mono) => {generatedNamespace}.{serializerName}.Serialize(({compType.FullName})mono),
                 Deserialize = (mono, dto) => {generatedNamespace}.{serializerName}.Deserialize(({compType.FullName})mono, ({generatedNamespace}.{dtoName})dto)
-            }};");
+            }});");
 
                     if (oneFilePerClass)
                     {
+                        
                         var fileText = WrapInNamespace(generatedNamespace, codeBlock);
+                        var fileTextWithDeps = DefaultDependencies() + fileText;
                         var filePath = Path.Combine(outputFolder, compType.Name + "Serializer.cs");
-                        File.WriteAllText(filePath, fileText);
+                        File.WriteAllText(filePath, fileTextWithDeps);
                         var logMessage = "[SaveCodeGenerator] Generated: " + filePath;
                         logs.Add(logMessage);
                     }
@@ -95,12 +95,6 @@ namespace Modules.ComponentSerialization
                     var logMessage = "[SaveCodeGenerator] Generated combined file: " + outFile;
                     logs.Add(logMessage);
                 }
-
-                var registryCode = GenerateComponentsRegistryFile(generatedNamespace, registryRecords);
-                var registryPath = Path.Combine(outputFolder, RegistryFileName);
-                File.WriteAllText(registryPath, registryCode);
-                var registryLogMessage = "[SaveCodeGenerator] Generated registry: " + registryPath;
-                logs.Add(registryLogMessage);
 
                 if (autoRefresh)
                 {
