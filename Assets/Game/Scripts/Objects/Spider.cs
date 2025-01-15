@@ -1,6 +1,7 @@
 using System;
-using Components.Core;
-using Components.Core.Aspects;
+using Aspects;
+using Components;
+using Components.Push;
 using UnityEngine;
 
 namespace Objects
@@ -9,7 +10,8 @@ namespace Objects
     {
         [SerializeField] private HealthComponent healthComponent;
         [SerializeField] private MoveComponent moveComponent;
-        [SerializeField] private TriggerDamageDealer triggerDamageDealer;
+        [SerializeField] private TriggerComponent triggerComponent;
+        [SerializeField] private DamageDealerComponent damageDealerComponent;
         [SerializeField] private PushComponent pushComponent;
         
         private void Awake()
@@ -20,13 +22,15 @@ namespace Objects
         private void OnEnable()
         {
             healthComponent.OnDeath += Destroy;
-            triggerDamageDealer.OnDealDamage += OnDealDamage;
+            triggerComponent.OnTriggerEnter += damageDealerComponent.TryDealDamage;
+            damageDealerComponent.OnDealDamage += OnDealDamage;
         }
 
         private void OnDisable()
         {
             healthComponent.OnDeath -= Destroy;
-            triggerDamageDealer.OnDealDamage -= OnDealDamage;
+            triggerComponent.OnTriggerEnter -= damageDealerComponent.TryDealDamage;
+            damageDealerComponent.OnDealDamage -= OnDealDamage;
         }
 
         private void OnDealDamage(Transform obj)

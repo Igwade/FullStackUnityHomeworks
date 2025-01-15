@@ -1,7 +1,7 @@
 using Objects;
 using UnityEngine;
 
-namespace SampleGame
+namespace Controllers
 {
     public class PushController: MonoBehaviour
     {

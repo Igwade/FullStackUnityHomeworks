@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using Utils.TagSelector.Attributes;
 
-namespace Utils.TagSelector.Editor
+namespace Game.Scripts.Utils.TagSelector.Editor
 {
     [CustomPropertyDrawer(typeof(TagSelectorAttribute))]
     public class TagSelectorDrawer : PropertyDrawer

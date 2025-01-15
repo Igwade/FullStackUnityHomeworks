@@ -487,9 +487,9 @@ GameObject:
   - component: {fileID: 3901938820052473378}
   - component: {fileID: 4789545884554990125}
   - component: {fileID: 4723204711618344702}
-  - component: {fileID: 7421037321252440100}
   - component: {fileID: 8793161942063782291}
   - component: {fileID: 2873338618360398370}
+  - component: {fileID: 1736031954883920291}
   m_Layer: 8
   m_Name: <Snake>
   m_TagString: Untagged
@@ -646,7 +646,8 @@ MonoBehaviour:
   healthComponent: {fileID: 5424092203978628342}
   moveComponent: {fileID: 3901938820052473378}
   lookComponent: {fileID: 4789545884554990125}
-  triggerDamageDealer: {fileID: 7421037321252440100}
+  damageDealerComponent: {fileID: 1736031954883920291}
+  triggerComponent: {fileID: 8793161942063782291}
   pushComponent: {fileID: 4723204711618344702}
 --- !u!114 &5424092203978628342
 MonoBehaviour:
@@ -706,23 +707,7 @@ MonoBehaviour:
   cooldown:
     duration: 0
     time: 0
---- !u!114 &7421037321252440100
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8521204571576199944}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3dd67ae2c5a44d5b9d8e49fff146eb0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 1
-  triggerComponent: {fileID: 8793161942063782291}
-  cooldown:
-    duration: 1
-    time: 0
+  overlapSphereComponent: {fileID: 0}
 --- !u!114 &8793161942063782291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -747,6 +732,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2382719e87954a8fa52958b5f9205d61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1736031954883920291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521204571576199944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df65b1f953ce4a02866d2c20cda99eaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
+  cooldown:
+    duration: 1
+    time: 1
 --- !u!1 &9168432786817898581
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,7 +1,7 @@
-using Components.Core;
+using Components.Jump;
 using UnityEngine;
 
-namespace SampleGame
+namespace Controllers
 {
     public class JumpController: MonoBehaviour
     {

@@ -1,5 +1,7 @@
-using Components.Core;
-using Components.Core.Aspects;
+using Aspects;
+using Components;
+using Components.Jump;
+using Components.Push;
 using UnityEngine;
 
 namespace Objects
@@ -11,15 +13,15 @@ namespace Objects
         [SerializeField] private LookComponent lookComponent;
         [SerializeField] private GroundedComponent groundedComponent;
         [SerializeField] private JumpComponent jumpComponent;
-        [SerializeField] private PushAreaComponent pushComponent;
-        [SerializeField] private PushAreaComponent tossComponent;
+        [SerializeField] private PushComponent pushComponent;
+        [SerializeField] private PushComponent tossComponent;
         
         private void Awake()
         {
             jumpComponent.Construct(this);
             moveComponent.Construct(this);
-            pushComponent.Construct(this);
-            tossComponent.Construct(this);
+            pushComponent.Construct(new PushCondition(this));
+            tossComponent.Construct(new TossCondition(this));
         }
 
         private void Update()
@@ -38,5 +40,19 @@ namespace Objects
 
         public void Push() => pushComponent.PushArea();
         public void Toss() => tossComponent.PushArea();
+        
+        class PushCondition : PushComponent.ICondition
+        {
+            private readonly Character _character;
+            public PushCondition(Character character) => _character = character;
+            public bool CanPush() => _character.healthComponent.IsAlive();
+        }
+        
+        class TossCondition : PushComponent.ICondition
+        {
+            private readonly Character _character;
+            public TossCondition(Character character) => _character = character;
+            public bool CanPush() => _character.healthComponent.IsAlive() && _character.groundedComponent.IsGrounded();
+        }
     }
 }

@@ -1,24 +1,27 @@
-using Components.Core;
-using Components.Core.Aspects;
+using Aspects;
+using Components;
 using UnityEngine;
 
 namespace Objects
 {
     public class Trap: MonoBehaviour, IDestroyable
     {
-        [SerializeField] private CollisionDamageDealer collisionDamageDealer;
         [SerializeField] private HealthComponent healthComponent;
+        [SerializeField] private CollisionComponent collisionComponent;
+        [SerializeField] private DamageDealerComponent damageDealerComponent;
 
         private void OnEnable()
         {
             healthComponent.OnDeath += Destroy;
-            collisionDamageDealer.OnDealDamage += OnDealCollisionDamage;
+            damageDealerComponent.OnDealDamage += OnDealCollisionDamage;
+            collisionComponent.OnCollisionEnter += damageDealerComponent.TryDealDamage;
         }
 
         private void OnDisable()
         {
             healthComponent.OnDeath -= Destroy;
-            collisionDamageDealer.OnDealDamage -= OnDealCollisionDamage;
+            damageDealerComponent.OnDealDamage -= OnDealCollisionDamage;
+            collisionComponent.OnCollisionEnter -= damageDealerComponent.TryDealDamage;
         }
 
         private void OnDealCollisionDamage(Transform _) => Destroy();

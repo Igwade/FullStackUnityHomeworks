@@ -485,10 +485,10 @@ GameObject:
   - component: {fileID: 7702228035775346570}
   - component: {fileID: 37493672169328787}
   - component: {fileID: 8388161895599865529}
-  - component: {fileID: 7596859979718944245}
   - component: {fileID: 7459576042918369420}
   - component: {fileID: 7700374623721466792}
   - component: {fileID: 7414058714699928588}
+  - component: {fileID: 8706417601256758723}
   m_Layer: 8
   m_Name: <Spider>
   m_TagString: Untagged
@@ -643,7 +643,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthComponent: {fileID: 37493672169328787}
   moveComponent: {fileID: 8388161895599865529}
-  triggerDamageDealer: {fileID: 7596859979718944245}
+  triggerComponent: {fileID: 7459576042918369420}
+  damageDealerComponent: {fileID: 8706417601256758723}
   pushComponent: {fileID: 7700374623721466792}
 --- !u!114 &37493672169328787
 MonoBehaviour:
@@ -674,23 +675,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transform: {fileID: 3105770917179402914}
   speed: 3
---- !u!114 &7596859979718944245
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8665529919726988981}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3dd67ae2c5a44d5b9d8e49fff146eb0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 1
-  triggerComponent: {fileID: 7459576042918369420}
-  cooldown:
-    duration: 1
-    time: 0
 --- !u!114 &7459576042918369420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -719,6 +703,7 @@ MonoBehaviour:
   cooldown:
     duration: 0
     time: 0
+  overlapSphereComponent: {fileID: 0}
 --- !u!114 &7414058714699928588
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -731,3 +716,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2382719e87954a8fa52958b5f9205d61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8706417601256758723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8665529919726988981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df65b1f953ce4a02866d2c20cda99eaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
+  cooldown:
+    duration: 1
+    time: 1

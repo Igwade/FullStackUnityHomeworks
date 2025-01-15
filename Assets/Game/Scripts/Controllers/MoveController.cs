@@ -1,8 +1,7 @@
 using Components;
-using Components.Core;
 using UnityEngine;
 
-namespace SampleGame
+namespace Controllers
 {
     public class MoveController : MonoBehaviour
     {

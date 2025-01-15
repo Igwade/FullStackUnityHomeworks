@@ -1,4 +1,5 @@
-using Components.Core;
+using Components;
+using Components.Destroyer;
 using UnityEngine;
 
 namespace Objects

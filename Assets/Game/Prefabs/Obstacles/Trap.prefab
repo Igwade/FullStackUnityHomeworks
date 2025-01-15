@@ -97,10 +97,10 @@ GameObject:
   - component: {fileID: 8320438562223812922}
   - component: {fileID: 8897707954789857208}
   - component: {fileID: 4759759082607856728}
-  - component: {fileID: 5383882079886577478}
   - component: {fileID: 5591187228165606631}
   - component: {fileID: 2481764269609236622}
   - component: {fileID: 8808104436036789812}
+  - component: {fileID: 8454448184408105344}
   m_Layer: 8
   m_Name: Trap
   m_TagString: Untagged
@@ -211,8 +211,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0e0a113baff444cb4b1d1c2f9f45b00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collisionDamageDealer: {fileID: 5383882079886577478}
   healthComponent: {fileID: 4759759082607856728}
+  collisionComponent: {fileID: 5591187228165606631}
+  damageDealerComponent: {fileID: 8454448184408105344}
 --- !u!114 &4759759082607856728
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,20 +229,6 @@ MonoBehaviour:
   maxPoints: 3
   hitPoints: 3
   isDead: 0
---- !u!114 &5383882079886577478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4331236207197526835}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aab93d310e9e4f5bb6d93805b82fa95f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 1
-  collisionComponent: {fileID: 5591187228165606631}
 --- !u!114 &5591187228165606631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -286,3 +273,19 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
+--- !u!114 &8454448184408105344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4331236207197526835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df65b1f953ce4a02866d2c20cda99eaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
+  cooldown:
+    duration: 0
+    time: 0
